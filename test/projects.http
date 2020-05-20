@@ -1,0 +1,4 @@
+GET http://localhost:80/projects
+Accept: application/json
+
+###
