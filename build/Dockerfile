@@ -14,5 +14,6 @@ RUN go build -i -gcflags "$GCFLAGS" -o /bin/app
 
 FROM alpine:${ALPINE_VERSION} as run
 WORKDIR /src/app
+COPY ./assets ./assets
 COPY --from=build /bin/app /bin/app
 ENTRYPOINT /bin/app
