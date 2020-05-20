@@ -1,0 +1,15 @@
+{{- with .Values.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ajensen-server.name" $ }}-svc
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "ajensen-server.selectorLabels" $ | nindent 6 }}
+  ports:
+  - port: {{ .port }}
+    targetPort: {{ default .port .containerPort }}
+    name: {{ .name }}
+    protocol: {{ default "TCP" .protocol }}
+{{- end }}

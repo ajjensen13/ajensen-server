@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ajensen-server.name" . }}-deploy
+  labels:
+  {{- include "ajensen-server.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+  {{- include "ajensen-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "ajensen-server.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      containers:
+      - name: {{ .Chart.Name }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 10 }}
+        image: "{{ .Values.image.repository }}{{ with .Values.image.tag }}:{{ . }}{{ end }}{{ with .Values.image.digest }}@{{ . }}{{ end }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- with .Values.service }}
+        ports:
+        - containerPort: {{ .containerPort }}
+          {{- with .protocol }}
+          protocol: {{ . }}
+          {{- end}}
+          {{- with .name }}
+          name: {{ . }}
+          {{- end}}
+        {{- end }}
+        env:
+        {{- toYaml .Values.env | nindent 10 }}
+        resources:
+        {{- toYaml .Values.resources | nindent 10 }}
+      {{- with .Values.serviceAccount }}
+      serviceAccountName: {{ .name }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+  {{- end }}
