@@ -22,6 +22,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -58,6 +59,8 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+
+		r.Use(cors.Default()) // this is public data, allow anyone to access it
 
 		err = tags.Init(logger, r, tagsDir)
 		if err != nil {
