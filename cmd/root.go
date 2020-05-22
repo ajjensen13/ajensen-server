@@ -54,13 +54,12 @@ var rootCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		r := gin.Default()
+		r.Use(cors.Default()) // this is public data, allow anyone to access it
 
 		err := projects.Init(logger, r, projectsDir)
 		if err != nil {
 			return err
 		}
-
-		r.Use(cors.Default()) // this is public data, allow anyone to access it
 
 		err = tags.Init(logger, r, tagsDir)
 		if err != nil {

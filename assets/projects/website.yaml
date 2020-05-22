@@ -1,15 +1,24 @@
-id: 1
-title: Personal Website
-content_markdown: |+
-  Ten years, and four score ago, I created a personal website
+- id: ajensen-client
+  title: Personal Website
+  content_markdown: |+
+    Ten years, and four score ago, I created a personal website
 
-  **it was okay**
+    **it was okay**
 
-tags: []
-start_date: 2020-05-01
-end_date: ~
-children:
-- id: 2
+  tags: []
+  start_date: 2020-05-01
+  end_date: ~
+- id: ajensen-server
+  title: Personal Website Server
+  content_markdown: |+
+    Ten years, and four score ago, I created a personal website
+
+    **it was okay**
+
+  tags: []
+  start_date: 2020-05-01
+  end_date: ~
+- id: rproxy
   title: Reverse Proxy
   content_markdown: |+
     I created a simple reverse proxy application that allows me
@@ -29,16 +38,6 @@ children:
 
     Source Code:
         [github.com/ajjensen13/rproxy](https://github.com/ajjensen13/rproxy)
-  tags: []
-  start_date: 2020-05-01
-  end_date: ~
-- id: 3
-  title: Stateful PostgreSQL with PGAdmin Behind Reverse Proxy
-  content_markdown: |+
-    Ten years, and four score ago, I created a personal website
-
-    **it was okay**
-
   tags: []
   start_date: 2020-05-01
   end_date: ~

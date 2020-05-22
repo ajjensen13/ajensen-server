@@ -50,7 +50,7 @@ func LoadFileData(l *log.Logger, dir string) ([]FileData, error) {
 	return result, nil
 }
 
-func ParseData(l *log.Logger, ds []FileData, i interface{}) ([]interface{}, error) {
+func ParseFileData(l *log.Logger, ds []FileData, i interface{}) ([]interface{}, error) {
 	var result []interface{}
 
 	t := reflect.TypeOf(i).Elem()

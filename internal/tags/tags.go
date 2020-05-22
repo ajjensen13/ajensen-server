@@ -21,7 +21,7 @@ func Init(l *log.Logger, r gin.IRoutes, dir string) error {
 		return err
 	}
 
-	ps, err := internal.ParseData(l, ds, new(tag))
+	ps, err := internal.ParseFileData(l, ds, new(tag))
 	if err != nil {
 		return err
 	}
