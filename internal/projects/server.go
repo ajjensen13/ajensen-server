@@ -38,7 +38,7 @@ func transformFileData(l *log.Logger, is []interface{}) []*webProject {
 		ds := i.(*[]*dataProject)
 		for _, d := range *ds {
 			w := d.webProject()
-			l.Printf("parsed markdown: %s (%d bytes)", w.Id, len(w.ContentHtml))
+			l.Printf("transformed: %s (%T -> %T)", w.Id, d, w)
 			ws = append(ws, w)
 		}
 	}
@@ -49,9 +49,9 @@ type dataProject struct {
 	Id              string     `yaml:"id"`
 	Title           string     `yaml:"title"`
 	ContentMarkdown string     `yaml:"content_markdown"`
-	Tags            []uint64   `yaml:"tags"`
 	StartDate       time.Time  `yaml:"start_date"`
 	EndDate         *time.Time `yaml:"end_date"`
+	Tags            []uint64   `yaml:"tags"`
 	Parent          string     `yaml:"parent"`
 }
 
@@ -59,14 +59,20 @@ type webProject struct {
 	Id          string     `json:"id"`
 	Title       string     `json:"title"`
 	ContentHtml string     `json:"content_html"`
-	Tags        []uint64   `json:"tags"`
 	StartDate   time.Time  `json:"start_date"`
 	EndDate     *time.Time `json:"end_date"`
+	Tags        []uint64   `json:"tags"`
 	Parent      string     `json:"parent"`
 }
 
 func (d *dataProject) webProject() *webProject {
-	var result webProject
-	result.ContentHtml = string(blackfriday.Run([]byte(d.ContentMarkdown)))
-	return &result
+	return &webProject{
+		Id:          d.Id,
+		Title:       d.Title,
+		ContentHtml: string(blackfriday.Run([]byte(d.ContentMarkdown))),
+		StartDate:   d.StartDate,
+		EndDate:     d.EndDate,
+		Tags:        d.Tags,
+		Parent:      d.Parent,
+	}
 }

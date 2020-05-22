@@ -1,2 +1,4 @@
-build/Dockerfile
 deploy/
+test/
+ajensen-server
+ajensen-server.exe
