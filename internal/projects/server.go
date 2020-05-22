@@ -2,6 +2,7 @@ package projects
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/russross/blackfriday/v2"
 	"log"
 	"net/http"
 	"time"
@@ -12,12 +13,12 @@ import (
 type project struct {
 	Id              uint64     `json:"id" yaml:"id"`
 	Title           string     `json:"title" yaml:"title"`
-	ContentHtml     string     `json:"content_html" yaml:"content_html"`
-	ContentMarkdown string     `json:"content_markdown" yaml:"content_markdown"`
+	ContentHtml     string     `json:"content_html" yaml:"-"`
+	ContentMarkdown string     `json:"-" yaml:"content_markdown"`
 	Tags            []uint64   `json:"tags" yaml:"tags"`
 	StartDate       time.Time  `json:"start_date" yaml:"start_date"`
 	EndDate         *time.Time `json:"end_date" yaml:"end_date"`
-	Children        []project  `json:"children" yaml:"children"`
+	Children        []*project `json:"children" yaml:"children"`
 }
 
 func Init(l *log.Logger, r gin.IRoutes, dir string) error {
@@ -28,14 +29,28 @@ func Init(l *log.Logger, r gin.IRoutes, dir string) error {
 		return err
 	}
 
-	ps, err := internal.ParseData(l, ds, new(project))
+	is, err := internal.ParseData(l, ds, new(project))
 	if err != nil {
 		return err
 	}
 
+	for _, i := range is {
+		p := i.(*project)
+		p.initHtmlFromMarkdown(l)
+	}
+
 	r.GET("/projects", func(c *gin.Context) {
-		c.JSON(http.StatusOK, ps)
+		c.JSON(http.StatusOK, is)
 	})
 
 	return nil
+}
+
+func (p *project) initHtmlFromMarkdown(l *log.Logger) {
+	p.ContentHtml = string(blackfriday.Run([]byte(p.ContentMarkdown)))
+	l.Printf("parsed markdown: %s [%d] (%d bytes)", p.Title, p.Id, len(p.ContentHtml))
+
+	for _, c := range p.Children {
+		c.initHtmlFromMarkdown(l)
+	}
 }
