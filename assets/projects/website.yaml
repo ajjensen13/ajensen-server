@@ -5,7 +5,16 @@
 
     **it was okay**
 
-  tags: []
+  tags:
+  - angular
+  - kubernetes
+  - docker
+  - helm
+  - teamcity
+  - typescript
+  - webstorm
+  - gke
+  - google-cloud
   start_date: 2020-05-01
   end_date: ~
 - id: ajensen-server
@@ -15,7 +24,16 @@
 
     **it was okay**
 
-  tags: []
+  tags:
+  - go
+  - kubernetes
+  - docker
+  - helm
+  - goland
+  - web-services
+  - resful-api
+  - gke
+  - google-cloud
   start_date: 2020-05-01
   end_date: ~
 - id: rproxy
@@ -38,6 +56,13 @@
 
     Source Code:
         [github.com/ajjensen13/rproxy](https://github.com/ajjensen13/rproxy)
-  tags: []
+  tags:
+  - go
+  - kubernetes
+  - docker
+  - helm
+  - goland
+  - gke
+  - google-cloud
   start_date: 2020-05-01
   end_date: ~

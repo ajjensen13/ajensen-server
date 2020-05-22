@@ -51,7 +51,7 @@ type dataProject struct {
 	ContentMarkdown string     `yaml:"content_markdown"`
 	StartDate       time.Time  `yaml:"start_date"`
 	EndDate         *time.Time `yaml:"end_date"`
-	Tags            []uint64   `yaml:"tags"`
+	Tags            []string   `yaml:"tags"`
 	Parent          string     `yaml:"parent"`
 }
 
@@ -61,7 +61,7 @@ type webProject struct {
 	ContentHtml string     `json:"content_html"`
 	StartDate   time.Time  `json:"start_date"`
 	EndDate     *time.Time `json:"end_date"`
-	Tags        []uint64   `json:"tags"`
+	Tags        []string   `json:"tags"`
 	Parent      string     `json:"parent"`
 }
 
