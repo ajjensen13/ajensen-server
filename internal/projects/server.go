@@ -48,9 +48,9 @@ func transformFileData(l *log.Logger, is []interface{}) []*webProject {
 type dataProject struct {
 	Id              string     `yaml:"id"`
 	Title           string     `yaml:"title"`
-	ContentMarkdown string     `yaml:"content_markdown"`
-	StartDate       time.Time  `yaml:"start_date"`
-	EndDate         *time.Time `yaml:"end_date"`
+	ContentMarkdown string     `yaml:"contentMarkdown"`
+	StartDate       time.Time  `yaml:"startDate"`
+	EndDate         *time.Time `yaml:"endDate"`
 	Tags            []string   `yaml:"tags"`
 	Parent          string     `yaml:"parent"`
 }
@@ -58,9 +58,9 @@ type dataProject struct {
 type webProject struct {
 	Id          string     `json:"id"`
 	Title       string     `json:"title"`
-	ContentHtml string     `json:"content_html"`
-	StartDate   time.Time  `json:"start_date"`
-	EndDate     *time.Time `json:"end_date"`
+	ContentHtml string     `json:"contentHtml"`
+	StartDate   time.Time  `json:"startDate"`
+	EndDate     *time.Time `json:"endDate"`
 	Tags        []string   `json:"tags"`
 	Parent      string     `json:"parent"`
 }

@@ -1,6 +1,6 @@
 - id: ajensen-client
   title: Personal Website
-  content_markdown: |+
+  contentMarkdown: |+
     Ten years, and four score ago, I created a personal website
 
     **it was okay**
@@ -15,11 +15,11 @@
   - webstorm
   - gke
   - google-cloud
-  start_date: 2020-05-01
-  end_date: ~
+  startDate: 2020-05-01
+  endDate: ~
 - id: ajensen-server
   title: Personal Website Server
-  content_markdown: |+
+  contentMarkdown: |+
     Ten years, and four score ago, I created a personal website
 
     **it was okay**
@@ -34,11 +34,11 @@
   - resful-api
   - gke
   - google-cloud
-  start_date: 2020-05-01
-  end_date: ~
+  startDate: 2020-05-01
+  endDate: ~
 - id: rproxy
   title: Reverse Proxy
-  content_markdown: |+
+  contentMarkdown: |+
     I created a simple reverse proxy application that allows me
     to easily route traffic to different Kubernetes services.
 
@@ -64,5 +64,5 @@
   - goland
   - gke
   - google-cloud
-  start_date: 2020-05-01
-  end_date: ~
+  startDate: 2020-05-01
+  endDate: ~
