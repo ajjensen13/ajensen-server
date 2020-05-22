@@ -1,0 +1,48 @@
+- id: kubernetes
+  title: Kubernetes
+  hyperlink: https://kubernetes.io/
+- id: docker
+  title: Docker
+  hyperlink: https://www.docker.com/
+- id: go
+  title: Go
+  hyperlink: https://go.dev/
+- id: google-cloud
+  title: Google Cloud
+  hyperlink: https://cloud.google.com/
+- id: gke
+  title: Google Kubernetes Engine
+  hyperlink: https://cloud.google.com/kubernetes-engine
+- id: helm
+  title: Helm
+  hyperlink: https://helm.sh/
+- id: teamcity
+  title: JetBrains TeamCity
+  hyperlink: https://www.jetbrains.com/teamcity/
+- id: ci
+  title: CI
+  hyperlink: https://en.wikipedia.org/wiki/Continuous_integration
+- id: cd
+  title: CD
+  hyperlink: https://en.wikipedia.org/wiki/Continuous_deployment
+- id: typescript
+  title: TypeScript
+  hyperlink: https://www.typescriptlang.org/
+- id: angular
+  title: Angular
+  hyperlink: https://angular.io/
+- id: node
+  title: Node.js
+  hyperlink: https://nodejs.org/en/
+- id: goland
+  title: GoLand
+  hyperlink: https://www.jetbrains.com/go/
+- id: webstorm
+  title: WebStorm
+  hyperlink: https://www.jetbrains.com/webstorm/
+- id: web-services
+  title: Web Services
+  hyperlink: https://en.wikipedia.org/wiki/Web_service
+- id: restful-api
+  title: RESTful API
+  hyperlink: https://en.wikipedia.org/wiki/Representational_state_transfer
