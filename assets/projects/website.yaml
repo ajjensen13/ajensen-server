@@ -8,4 +8,37 @@ content_markdown: |+
 tags: []
 start_date: 2020-05-01
 end_date: ~
-children: []
+children:
+- id: 2
+  title: Reverse Proxy
+  content_markdown: |+
+    I created a simple reverse proxy application that allows me
+    to easily route traffic to different Kubernetes services.
+
+    It was relatively straight-forward to implement using the
+    [httputils](https://pkg.go.dev/net/http/httputil?tab=doc#ReverseProxy) package
+    from the golang standard library.
+
+    I decided to develop a custom implementation rather than using
+    a standard nginx image for a few reasons:
+
+    1. I wanted a simple and straight-forward Go application to test my TeamCity build agents with.
+    2. I plan to implement an adaptive Single-Page-App server that uses machine learning to push
+    assets to clients. I want to detect what files to push by monitoring requests that happen within
+    a single HTTP keep-alive connection. I'll likely add this tracking to the reverse-proxy layer.
+
+    Source Code:
+        [github.com/ajjensen13/rproxy](https://github.com/ajjensen13/rproxy)
+  tags: []
+  start_date: 2020-05-01
+  end_date: ~
+- id: 3
+  title: Stateful PostgreSQL with PGAdmin Behind Reverse Proxy
+  content_markdown: |+
+    Ten years, and four score ago, I created a personal website
+
+    **it was okay**
+
+  tags: []
+  start_date: 2020-05-01
+  end_date: ~
