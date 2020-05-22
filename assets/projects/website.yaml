@@ -15,7 +15,7 @@
   - webstorm
   - gke
   - google-cloud
-  startDate: 2020-05-01
+  startDate: 2020-05-14
   endDate: ~
 - id: ajensen-server
   title: Personal Website Server
@@ -34,8 +34,8 @@
   - restful-api
   - gke
   - google-cloud
-  startDate: 2020-05-01
-  endDate: ~
+  startDate: 2020-05-12
+  endDate: 2020-05-22
 - id: rproxy
   title: Reverse Proxy
   contentMarkdown: |+
@@ -65,4 +65,4 @@
   - gke
   - google-cloud
   startDate: 2020-05-01
-  endDate: ~
+  endDate: 2020-05-13
