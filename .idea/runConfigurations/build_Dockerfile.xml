@@ -5,7 +5,7 @@
         <option name="imageTag" value="gcr.io/ajensen-1993/ajensen-server:bootstrap" />
         <option name="buildCliOptions" value="" />
         <option name="command" value="--debug" />
-        <option name="containerName" value="" />
+        <option name="containerName" value="ajensen-server" />
         <option name="contextFolderPath" value="." />
         <option name="entrypoint" value="" />
         <option name="portBindings">
