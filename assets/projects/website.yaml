@@ -17,6 +17,7 @@
   - google-cloud
   startDate: 2020-05-14
   endDate: ~
+  color: "#789174"
 - id: ajensen-server
   title: Personal Website Server
   contentMarkdown: |+
@@ -36,6 +37,7 @@
   - google-cloud
   startDate: 2020-05-12
   endDate: 2020-05-22
+  color: "#789174"
 - id: rproxy
   title: Reverse Proxy
   contentMarkdown: |+
@@ -66,3 +68,4 @@
   - google-cloud
   startDate: 2020-05-01
   endDate: 2020-05-13
+  color: "#789174"

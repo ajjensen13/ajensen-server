@@ -47,12 +47,14 @@ type dataTag struct {
 	Id        string `yaml:"id"`
 	Title     string `yaml:"title"`
 	Hyperlink string `yaml:"hyperlink"`
+	Color     string `yaml:"color"`
 }
 
 type webTag struct {
 	Id        string `json:"id"`
 	Title     string `json:"title"`
 	Hyperlink string `json:"hyperlink"`
+	Color     string `json:"color"`
 }
 
 func (d *dataTag) webTag() *webTag {
@@ -60,5 +62,6 @@ func (d *dataTag) webTag() *webTag {
 		Id:        d.Id,
 		Title:     d.Title,
 		Hyperlink: d.Hyperlink,
+		Color:     d.Color,
 	}
 }

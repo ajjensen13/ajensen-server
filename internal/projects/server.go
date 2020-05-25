@@ -53,6 +53,7 @@ type dataProject struct {
 	EndDate         *time.Time `yaml:"endDate"`
 	Tags            []string   `yaml:"tags"`
 	Parent          string     `yaml:"parent"`
+	Color           string     `yaml:"color"`
 }
 
 type webProject struct {
@@ -60,9 +61,10 @@ type webProject struct {
 	Title       string     `json:"title"`
 	ContentHtml string     `json:"contentHtml"`
 	StartDate   time.Time  `json:"startDate"`
-	EndDate     *time.Time `json:"endDate"`
-	Tags        []string   `json:"tags"`
-	Parent      string     `json:"parent"`
+	EndDate     *time.Time `json:"endDate,omitempty"`
+	Tags        []string   `json:"tags,omitempty"`
+	Parent      string     `json:"parent,omitempty"`
+	Color       string     `json:"color,omitempty"`
 }
 
 func (d *dataProject) webProject() *webProject {
@@ -74,5 +76,6 @@ func (d *dataProject) webProject() *webProject {
 		EndDate:     d.EndDate,
 		Tags:        d.Tags,
 		Parent:      d.Parent,
+		Color:       d.Color,
 	}
 }
