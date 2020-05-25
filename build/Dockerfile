@@ -8,8 +8,10 @@ ENV GO111MODULE=on
 WORKDIR /src/app
 COPY ./go.mod ./go.sum ./
 RUN go mod download
-COPY . .
-RUN go test -json ./...
+COPY ./*.go .
+COPY ./cmd ./cmd
+COPY ./internal ./internal
+#RUN go test -json ./...
 RUN go build -i -gcflags "$GCFLAGS" -o /bin/app
 
 FROM alpine:${ALPINE_VERSION} as run
