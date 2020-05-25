@@ -1,0 +1,9 @@
+- id: epic
+  title: Epic Systems
+  contentMarkdown: |+
+    ## Description ##
+    I worked at Epic for a while
+  tags: []
+  startDate: 2015-06-01
+  endDate: ~
+  color: "#ba122b"

@@ -1,9 +1,15 @@
 - id: ajensen-client
   title: Personal Website
   contentMarkdown: |+
-    Ten years, and four score ago, I created a personal website
+    ## Description ##
+    I created this website to showcase my professional skills and personal projects.
 
-    **it was okay**
+    ## Technical Details ##
+    The website is built using Angular and is hosted in a Kubernetes cluster in Google
+    Cloud (GKE). It talks to a RESTful Web API server written in Go.
+
+    * <small>**Source Code:** [github.com/ajjensen13/ajensen-client](https://github.com/ajjensen13/ajensen-client)</small>
+    * <small>**TeamCity Project:** [ajensen-1993/ajensen-client](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenClient&tab=projectOverview)</small>
 
   tags:
   - angular
@@ -19,11 +25,23 @@
   endDate: ~
   color: "#789174"
 - id: ajensen-server
-  title: Personal Website Server
+  parent: ajensen-client
+  title: Personal Website (Backend)
   contentMarkdown: |+
-    Ten years, and four score ago, I created a personal website
+    ## Description ##
+    Instead of hardcoding data into this website, I created a backend web server.
 
-    **it was okay**
+    This allowed me to showcase networking in Kubernetes, and allowed me to easily
+    create and parse the sites content in YAML. This had a number of benefits, but
+    being able to write Markdown directly in configuration files without special
+    formatting was the main draw.
+
+    ## Technical Details ##
+    The web server is written in Go and uses the [gin-gonic](https://pkg.go.dev/github.com/gin-gonic/gin?tab=doc)
+    web framework. It is hosted in a Kubernetes cluster in Google Cloud (GKE).
+
+    * <small>**Code Code & Documentation:** [github.com/ajjensen13/ajensen-server](https://pkg.go.dev/github.com/ajjensen13/ajensen-server?tab=doc)</small>
+    * <small>**TeamCity Project:** [ajensen-1993/ajensen-server](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenServer&tab=projectOverview)</small>
 
   tags:
   - go
