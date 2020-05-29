@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+  <configuration default="false" name="build/Dockerfile (mounted)" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
         <option name="imageTag" value="gcr.io/ajensen-1993/ajensen-server:bootstrap" />
         <option name="buildCliOptions" value="" />
-        <option name="command" value="" />
+        <option name="command" value="--debug" />
         <option name="containerName" value="ajensen-server" />
         <option name="contextFolderPath" value="." />
         <option name="entrypoint" value="" />
@@ -18,6 +18,15 @@
         </option>
         <option name="commandLineOptions" value="" />
         <option name="sourceFilePath" value="build/Dockerfile" />
+        <option name="volumeBindings">
+          <list>
+            <DockerVolumeBindingImpl>
+              <option name="containerPath" value="/src/app/assets" />
+              <option name="hostPath" value="$PROJECT_DIR$/assets" />
+              <option name="readOnly" value="true" />
+            </DockerVolumeBindingImpl>
+          </list>
+        </option>
       </settings>
     </deployment>
     <method v="2" />

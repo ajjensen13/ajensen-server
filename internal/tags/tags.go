@@ -4,12 +4,19 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/ajjensen13/ajensen-server/internal"
 )
 
-func Init(l *log.Logger, r gin.IRoutes, dir string) error {
-	l.Printf("initializing tags from directory: %s", dir)
+var (
+	lock    sync.RWMutex
+	webTags []*webTag
+)
+
+func initWebTags(l *log.Logger, dir string) error {
+	lock.Lock()
+	defer lock.Unlock()
 
 	ds, err := internal.LoadFileData(l, dir)
 	if err != nil {
@@ -21,13 +28,43 @@ func Init(l *log.Logger, r gin.IRoutes, dir string) error {
 		return err
 	}
 
-	ws := transformFileData(l, is)
+	webTags = transformFileData(l, is)
+	return nil
+}
 
-	r.GET("/tags", func(c *gin.Context) {
-		c.JSON(http.StatusOK, ws)
-	})
+func Init(l *log.Logger, r gin.IRoutes, dir string) error {
+	l.Printf("initializing tags from directory: %s", dir)
+	err := initWebTags(l, dir)
+	if err != nil {
+		return err
+	}
+
+	r.GET("/tags", tagHandler(l, dir))
 
 	return nil
+}
+
+func tagHandler(l *log.Logger, dir string) func(*gin.Context) {
+	result := func(c *gin.Context) {
+		lock.RLock()
+		defer lock.RUnlock()
+
+		c.JSON(http.StatusOK, webTags)
+	}
+
+	if gin.Mode() == gin.DebugMode {
+		return func(c *gin.Context) {
+			l.Printf("reloading tags from directory because we're in debug mode: %s", dir)
+			err := initWebTags(l, dir)
+			if err != nil {
+				_ = c.AbortWithError(http.StatusInternalServerError, err)
+				return
+			}
+			result(c)
+		}
+	}
+
+	return result
 }
 
 func transformFileData(l *log.Logger, is []interface{}) []*webTag {

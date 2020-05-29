@@ -5,13 +5,20 @@ import (
 	"github.com/russross/blackfriday/v2"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/ajjensen13/ajensen-server/internal"
 )
 
-func Init(l *log.Logger, r gin.IRoutes, dir string) error {
-	l.Printf("initializing projects from directory: %s", dir)
+var (
+	lock        sync.RWMutex
+	webProjects []*webProject
+)
+
+func initWebProjects(l *log.Logger, dir string) error {
+	lock.Lock()
+	defer lock.Unlock()
 
 	ds, err := internal.LoadFileData(l, dir)
 	if err != nil {
@@ -23,13 +30,44 @@ func Init(l *log.Logger, r gin.IRoutes, dir string) error {
 		return err
 	}
 
-	ws := transformFileData(l, is)
+	webProjects = transformFileData(l, is)
+	return nil
+}
 
-	r.GET("/projects", func(c *gin.Context) {
-		c.JSON(http.StatusOK, ws)
-	})
+func Init(l *log.Logger, r gin.IRoutes, dir string) error {
+	l.Printf("initializing projects from directory: %s", dir)
+
+	err := initWebProjects(l, dir)
+	if err != nil {
+		return err
+	}
+
+	r.GET("/projects", projectHandler(l, dir))
 
 	return nil
+}
+
+func projectHandler(l *log.Logger, dir string) func(*gin.Context) {
+	result := func(c *gin.Context) {
+		lock.RLock()
+		defer lock.RUnlock()
+
+		c.JSON(http.StatusOK, webProjects)
+	}
+
+	if gin.Mode() == gin.DebugMode {
+		return func(c *gin.Context) {
+			l.Printf("reloading projects from directory because we're in debug mode: %s", dir)
+			err := initWebProjects(l, dir)
+			if err != nil {
+				_ = c.AbortWithError(http.StatusInternalServerError, err)
+				return
+			}
+			result(c)
+		}
+	}
+
+	return result
 }
 
 func transformFileData(l *log.Logger, is []interface{}) []*webProject {

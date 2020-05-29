@@ -11,11 +11,11 @@ RUN go mod download
 COPY ./*.go .
 COPY ./cmd ./cmd
 COPY ./internal ./internal
-#RUN go test -json ./...
+RUN go test -json ./...
 RUN go build -i -gcflags "$GCFLAGS" -o /bin/app
 
 FROM alpine:${ALPINE_VERSION} as run
 WORKDIR /src/app
 COPY ./assets ./assets
 COPY --from=build /bin/app /bin/app
-ENTRYPOINT /bin/app
+ENTRYPOINT [ "/bin/app" ]
