@@ -47,6 +47,28 @@ spec:
         {{- toYaml .Values.env | nindent 10 }}
         resources:
         {{- toYaml .Values.resources | nindent 10 }}
+        volumeMounts:
+        - name: k8info
+          mountPath: /etc/k8info
+      volumes:
+      - name: k8info
+        projected:
+          sources:
+          - downwardAPI:
+              items:
+              - path: pod_name
+                fieldRef:
+                  fieldPath: metadata.name
+              - path: pod_namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+              - path: pod_labels
+                fieldRef:
+                  fieldPath: metadata.labels
+          - configMap:
+              name: k8-cluster-info-cm
+          - configMap:
+              name: {{ .Chart.Name }}-container-name-cm
       {{- with .Values.serviceAccount }}
       serviceAccountName: {{ .name }}
       {{- end }}
@@ -61,4 +83,4 @@ spec:
       {{- with .Values.tolerations }}
       tolerations:
       {{- toYaml . | nindent 8 }}
-  {{- end }}
+      {{- end }}

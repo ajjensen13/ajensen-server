@@ -18,10 +18,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"cloud.google.com/go/logging"
+	"context"
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -30,11 +35,11 @@ import (
 
 	"github.com/ajjensen13/ajensen-server/internal/projects"
 	"github.com/ajjensen13/ajensen-server/internal/tags"
+	"github.com/ajjensen13/gke"
 )
 
 var (
 	cfgFile string
-	logger  *log.Logger
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -43,31 +48,54 @@ var rootCmd = &cobra.Command{
 	Short: `backend server for ajensen-client`,
 	Long:  `backend server for ajensen-client`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger = log.New(log.Writer(), log.Prefix(), log.Flags())
-		gin.DefaultWriter = logger.Writer()
 		if debug {
 			gin.SetMode(gin.DebugMode)
-			logger.Printf("running in debug mode")
 		} else {
 			gin.SetMode(gin.ReleaseMode)
-			logger.Printf("running in release mode")
 		}
 	},
-	RunE: func(cmd *cobra.Command, args []string) error {
-		r := gin.Default()
-		r.Use(cors.Default()) // this is public data, allow anyone to access it
-
-		err := projects.Init(logger, r, projectsDir)
+	Run: func(cmd *cobra.Command, args []string) {
+		lg, cleanup, err := gke.NewLogger(context.Background())
 		if err != nil {
-			return err
+			log.Panic(err)
 		}
+		defer cleanup()
 
-		err = tags.Init(logger, r, tagsDir)
-		if err != nil {
-			return err
-		}
+		gke.LogEnv(lg)
+		gke.LogMetadata(lg)
 
-		return r.Run(addr)
+		gke.Do(func(aliveCtx context.Context) error {
+			gin.DefaultWriter = lg.StandardLogger(logging.Default).Writer()
+
+			r := gin.Default()
+			r.Use(cors.Default()) // this is public data, allow anyone to access it
+
+			err = projects.Init(lg, r, projectsDir)
+			if err != nil {
+				return lg.ErrorErr(err)
+			}
+
+			err = tags.Init(lg, r, tagsDir)
+			if err != nil {
+				return lg.ErrorErr(err)
+			}
+
+			srv, err := gke.NewServer(aliveCtx, r, lg)
+			if err != nil {
+				return lg.ErrorErr(err)
+			}
+
+			err = srv.ListenAndServe()
+			switch {
+			case errors.Is(err, http.ErrServerClosed):
+				lg.Info("server shutdown gracefully")
+				return nil
+			default:
+				return lg.ErrorErr(fmt.Errorf("server shutdown error: %w", err))
+			}
+		})
+
+		<-gke.AfterAliveContext(time.Second * 10).Done()
 	},
 }
 

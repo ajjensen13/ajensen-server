@@ -19,9 +19,9 @@ package internal
 
 import (
 	"fmt"
+	"github.com/ajjensen13/gke"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -32,8 +32,8 @@ type FileData struct {
 	Data []byte
 }
 
-func LoadFileData(l *log.Logger, dir string) ([]FileData, error) {
-	l.Printf("loading directory: %s", dir)
+func LoadFileData(lg gke.Logger, dir string) ([]FileData, error) {
+	lg.Defaultf("loading directory: %s", dir)
 
 	fis, err := ioutil.ReadDir(dir)
 	switch {
@@ -48,7 +48,7 @@ func LoadFileData(l *log.Logger, dir string) ([]FileData, error) {
 		f := filepath.Join(dir, fi.Name())
 
 		if fi.IsDir() {
-			ps, err := LoadFileData(l, f)
+			ps, err := LoadFileData(lg, f)
 			if err != nil {
 				return nil, err
 			}
@@ -61,19 +61,19 @@ func LoadFileData(l *log.Logger, dir string) ([]FileData, error) {
 			return nil, fmt.Errorf("internal: error while reading file %q: %w", f, err)
 		}
 		result = append(result, FileData{Name: f, Data: d})
-		l.Printf("loaded file: %s (%d bytes)", f, len(f))
+		lg.Defaultf("loaded file: %s (%d bytes)", f, len(f))
 	}
 
 	return result, nil
 }
 
-func ParseFileData(l *log.Logger, ds []FileData, i interface{}) ([]interface{}, error) {
+func ParseFileData(lg gke.Logger, ds []FileData, i interface{}) ([]interface{}, error) {
 	var result []interface{}
 
 	t := reflect.TypeOf(i).Elem()
 	for _, d := range ds {
 		into := reflect.New(t).Interface()
-		l.Printf("parsing file %q into type %T (%d bytes)", d.Name, into, len(d.Data))
+		lg.Defaultf("parsing file %q into type %T (%d bytes)", d.Name, into, len(d.Data))
 
 		err := yaml.Unmarshal(d.Data, into)
 		if err != nil {

@@ -18,8 +18,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package tags
 
 import (
+	"github.com/ajjensen13/gke"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"sync"
 
@@ -31,37 +31,37 @@ var (
 	webTags []*webTag
 )
 
-func initWebTags(l *log.Logger, dir string) error {
+func initWebTags(lg gke.Logger, dir string) error {
 	lock.Lock()
 	defer lock.Unlock()
 
-	ds, err := internal.LoadFileData(l, dir)
+	ds, err := internal.LoadFileData(lg, dir)
 	if err != nil {
 		return err
 	}
 
-	is, err := internal.ParseFileData(l, ds, new([]*dataTag))
+	is, err := internal.ParseFileData(lg, ds, new([]*dataTag))
 	if err != nil {
 		return err
 	}
 
-	webTags = transformFileData(l, is)
+	webTags = transformFileData(lg, is)
 	return nil
 }
 
-func Init(l *log.Logger, r gin.IRoutes, dir string) error {
-	l.Printf("initializing tags from directory: %s", dir)
-	err := initWebTags(l, dir)
+func Init(lg gke.Logger, r gin.IRoutes, dir string) error {
+	lg.Defaultf("initializing tags from directory: %s", dir)
+	err := initWebTags(lg, dir)
 	if err != nil {
 		return err
 	}
 
-	r.GET("/tags", tagHandler(l, dir))
+	r.GET("/tags", tagHandler(lg, dir))
 
 	return nil
 }
 
-func tagHandler(l *log.Logger, dir string) func(*gin.Context) {
+func tagHandler(lg gke.Logger, dir string) func(*gin.Context) {
 	result := func(c *gin.Context) {
 		lock.RLock()
 		defer lock.RUnlock()
@@ -71,8 +71,8 @@ func tagHandler(l *log.Logger, dir string) func(*gin.Context) {
 
 	if gin.Mode() == gin.DebugMode {
 		return func(c *gin.Context) {
-			l.Printf("reloading tags from directory because we're in debug mode: %s", dir)
-			err := initWebTags(l, dir)
+			lg.Defaultf("reloading tags from directory because we're in debug mode: %s", dir)
+			err := initWebTags(lg, dir)
 			if err != nil {
 				_ = c.AbortWithError(http.StatusInternalServerError, err)
 				return
@@ -84,13 +84,13 @@ func tagHandler(l *log.Logger, dir string) func(*gin.Context) {
 	return result
 }
 
-func transformFileData(l *log.Logger, is []interface{}) []*webTag {
+func transformFileData(lg gke.Logger, is []interface{}) []*webTag {
 	ws := make([]*webTag, 0, len(is))
 	for _, i := range is {
 		ds := i.(*[]*dataTag)
 		for _, d := range *ds {
 			w := d.webTag()
-			l.Printf("transformed: %s (%T -> %T)", w.Id, d, w)
+			lg.Defaultf("transformed: %s (%T -> %T)", w.Id, d, w)
 			ws = append(ws, w)
 		}
 	}

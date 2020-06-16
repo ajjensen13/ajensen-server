@@ -18,9 +18,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package projects
 
 import (
+	"github.com/ajjensen13/gke"
 	"github.com/gin-gonic/gin"
 	"github.com/russross/blackfriday/v2"
-	"log"
 	"net/http"
 	"sync"
 	"time"
@@ -33,38 +33,38 @@ var (
 	webProjects []*webProject
 )
 
-func initWebProjects(l *log.Logger, dir string) error {
+func initWebProjects(lg gke.Logger, dir string) error {
 	lock.Lock()
 	defer lock.Unlock()
 
-	ds, err := internal.LoadFileData(l, dir)
+	ds, err := internal.LoadFileData(lg, dir)
 	if err != nil {
 		return err
 	}
 
-	is, err := internal.ParseFileData(l, ds, new([]*dataProject))
+	is, err := internal.ParseFileData(lg, ds, new([]*dataProject))
 	if err != nil {
 		return err
 	}
 
-	webProjects = transformFileData(l, is)
+	webProjects = transformFileData(lg, is)
 	return nil
 }
 
-func Init(l *log.Logger, r gin.IRoutes, dir string) error {
-	l.Printf("initializing projects from directory: %s", dir)
+func Init(lg gke.Logger, r gin.IRoutes, dir string) error {
+	lg.Defaultf("initializing projects from directory: %s", dir)
 
-	err := initWebProjects(l, dir)
+	err := initWebProjects(lg, dir)
 	if err != nil {
 		return err
 	}
 
-	r.GET("/projects", projectHandler(l, dir))
+	r.GET("/projects", projectHandler(lg, dir))
 
 	return nil
 }
 
-func projectHandler(l *log.Logger, dir string) func(*gin.Context) {
+func projectHandler(lg gke.Logger, dir string) func(*gin.Context) {
 	result := func(c *gin.Context) {
 		lock.RLock()
 		defer lock.RUnlock()
@@ -74,8 +74,8 @@ func projectHandler(l *log.Logger, dir string) func(*gin.Context) {
 
 	if gin.Mode() == gin.DebugMode {
 		return func(c *gin.Context) {
-			l.Printf("reloading projects from directory because we're in debug mode: %s", dir)
-			err := initWebProjects(l, dir)
+			lg.Defaultf("reloading projects from directory because we're in debug mode: %s", dir)
+			err := initWebProjects(lg, dir)
 			if err != nil {
 				_ = c.AbortWithError(http.StatusInternalServerError, err)
 				return
@@ -87,13 +87,13 @@ func projectHandler(l *log.Logger, dir string) func(*gin.Context) {
 	return result
 }
 
-func transformFileData(l *log.Logger, is []interface{}) []*webProject {
+func transformFileData(lg gke.Logger, is []interface{}) []*webProject {
 	ws := make([]*webProject, 0, len(is))
 	for _, i := range is {
 		ds := i.(*[]*dataProject)
 		for _, d := range *ds {
 			w := d.webProject()
-			l.Printf("transformed: %s (%T -> %T)", w.Id, d, w)
+			lg.Defaultf("transformed: %s (%T -> %T)", w.Id, d, w)
 			ws = append(ws, w)
 		}
 	}
