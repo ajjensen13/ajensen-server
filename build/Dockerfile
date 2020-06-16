@@ -1,21 +1,21 @@
-ARG GO_VERSION=1
-ARG ALPINE_VERSION=3.11
+ARG GO_VERSION
 
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} as build
+FROM golang:${GO_VERSION} as build
 ARG GCFLAGS="-c 1"
 ENV CGO_ENABLED=0
 ENV GO111MODULE=on
 WORKDIR /src/app
+RUN go get github.com/go-delve/delve/cmd/dlv
 COPY ./go.mod ./go.sum ./
 RUN go mod download
-COPY ./*.go .
-COPY ./cmd ./cmd
-COPY ./internal ./internal
+COPY . .
 RUN go test -json ./...
-RUN go build -i -gcflags "$GCFLAGS" -o /bin/app
+RUN go build -gcflags "$GCFLAGS" -o /go/bin/app
 
-FROM alpine:${ALPINE_VERSION} as run
+FROM gcr.io/distroless/base as run
+ENV GOTRACEBACK=single
+COPY --from=build /go/bin/* /bin/
+CMD [ "/go/app" ]
+
 WORKDIR /src/app
 COPY ./assets ./assets
-COPY --from=build /bin/app /bin/app
-ENTRYPOINT [ "/bin/app" ]

@@ -3,8 +3,8 @@
     <deployment type="dockerfile">
       <settings>
         <option name="imageTag" value="gcr.io/ajensen-1993/ajensen-server:bootstrap" />
-        <option name="buildCliOptions" value="" />
-        <option name="command" value="--debug" />
+        <option name="buildCliOptions" value="--build-arg GO_VERSION=1.14 --build-arg ALPINE_VERSION=3.12" />
+        <option name="command" value="/bin/app --debug" />
         <option name="containerName" value="ajensen-server" />
         <option name="contextFolderPath" value="." />
         <option name="entrypoint" value="" />
