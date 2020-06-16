@@ -37,7 +37,7 @@ func initWebProjects(lg gke.Logger, dir string) error {
 	lock.Lock()
 	defer lock.Unlock()
 
-	ds, err := internal.LoadFileData(lg, dir)
+	ds, err := internal.LoadDirData(lg, dir)
 	if err != nil {
 		return err
 	}
@@ -51,8 +51,9 @@ func initWebProjects(lg gke.Logger, dir string) error {
 	return nil
 }
 
+// Init binds routes to r for serving projects.
 func Init(lg gke.Logger, r gin.IRoutes, dir string) error {
-	lg.Defaultf("initializing projects from directory: %s", dir)
+	lg.Default(gke.NewFmtMsgData("initializing projects from directory: %s", dir))
 
 	err := initWebProjects(lg, dir)
 	if err != nil {
@@ -74,7 +75,7 @@ func projectHandler(lg gke.Logger, dir string) func(*gin.Context) {
 
 	if gin.Mode() == gin.DebugMode {
 		return func(c *gin.Context) {
-			lg.Defaultf("reloading projects from directory because we're in debug mode: %s", dir)
+			lg.Default(gke.NewFmtMsgData("reloading projects from directory because we're in debug mode: %s", dir))
 			err := initWebProjects(lg, dir)
 			if err != nil {
 				_ = c.AbortWithError(http.StatusInternalServerError, err)
@@ -93,7 +94,7 @@ func transformFileData(lg gke.Logger, is []interface{}) []*webProject {
 		ds := i.(*[]*dataProject)
 		for _, d := range *ds {
 			w := d.webProject()
-			lg.Defaultf("transformed: %s (%T -> %T)", w.Id, d, w)
+			lg.Default(gke.NewFmtMsgData("transformed: %s (%T -> %T)", w.Id, d, w))
 			ws = append(ws, w)
 		}
 	}

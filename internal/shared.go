@@ -32,15 +32,16 @@ type FileData struct {
 	Data []byte
 }
 
-func LoadFileData(lg gke.Logger, dir string) ([]FileData, error) {
-	lg.Defaultf("loading directory: %s", dir)
+// LoadDirData recursively loads the files from dir into a FileData slice
+func LoadDirData(lg gke.Logger, dir string) ([]FileData, error) {
+	lg.Default(gke.NewFmtMsgData("LoadDirData: %s", dir))
 
 	fis, err := ioutil.ReadDir(dir)
 	switch {
 	case os.IsNotExist(err):
 		return nil, nil
 	case err != nil:
-		return nil, fmt.Errorf("internal: error while reading directory: %w", err)
+		return nil, fmt.Errorf("error while reading directory: %w", err)
 	}
 
 	var result []FileData
@@ -48,7 +49,7 @@ func LoadFileData(lg gke.Logger, dir string) ([]FileData, error) {
 		f := filepath.Join(dir, fi.Name())
 
 		if fi.IsDir() {
-			ps, err := LoadFileData(lg, f)
+			ps, err := LoadDirData(lg, f)
 			if err != nil {
 				return nil, err
 			}
@@ -56,28 +57,39 @@ func LoadFileData(lg gke.Logger, dir string) ([]FileData, error) {
 			continue
 		}
 
-		d, err := ioutil.ReadFile(f)
+		d, err := loadFileData(lg, f)
 		if err != nil {
-			return nil, fmt.Errorf("internal: error while reading file %q: %w", f, err)
+			return nil, err
 		}
-		result = append(result, FileData{Name: f, Data: d})
-		lg.Defaultf("loaded file: %s (%d bytes)", f, len(f))
+		result = append(result, d)
 	}
 
 	return result, nil
 }
 
+func loadFileData(lg gke.Logger, f string) (FileData, error) {
+	d, err := ioutil.ReadFile(f)
+	if err != nil {
+		return FileData{}, fmt.Errorf("error while reading file %q: %w", f, err)
+	}
+
+	lg.Default(gke.NewFmtMsgData("loadFileData: %s (%d bytes)", f, len(f)))
+	return FileData{Name: f, Data: d}, nil
+}
+
+// ParseFileData parses file data into a new slice by calling yaml.Unmarshal.
+// Parameter i is the destination type.
 func ParseFileData(lg gke.Logger, ds []FileData, i interface{}) ([]interface{}, error) {
 	var result []interface{}
 
 	t := reflect.TypeOf(i).Elem()
 	for _, d := range ds {
 		into := reflect.New(t).Interface()
-		lg.Defaultf("parsing file %q into type %T (%d bytes)", d.Name, into, len(d.Data))
+		lg.Default(gke.NewFmtMsgData("parsing file %q into type %T (%d bytes)", d.Name, into, len(d.Data)))
 
 		err := yaml.Unmarshal(d.Data, into)
 		if err != nil {
-			return nil, fmt.Errorf("internal: error while parsing file %q into type %T: %w", d.Name, into, err)
+			return nil, fmt.Errorf("error while parsing file %q into type %T: %w", d.Name, into, err)
 		}
 
 		result = append(result, into)
