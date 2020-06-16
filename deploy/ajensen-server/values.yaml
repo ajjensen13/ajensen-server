@@ -21,9 +21,8 @@ service:
   protocol: TCP
 affinity:
   nodeAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-    - preference:
-        matchExpressions:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
         - key: cloud.google.com/gke-preemptible
           operator: Exists
-      weight: 50
