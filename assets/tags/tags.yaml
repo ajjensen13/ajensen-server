@@ -1,24 +1,31 @@
 - id: kubernetes
   title: Kubernetes
   hyperlink: https://kubernetes.io/
+  color: "#3f6ede"
 - id: docker
   title: Docker
   hyperlink: https://www.docker.com/
+  color: "#4996e6"
 - id: go
   title: Go
   hyperlink: https://go.dev/
+  color: "#357c99"
 - id: google-cloud
   title: Google Cloud
   hyperlink: https://cloud.google.com/
+  color: "#58a55c"
 - id: gke
   title: Google Kubernetes Engine
   hyperlink: https://cloud.google.com/kubernetes-engine
+  color: "#3674e0"
 - id: helm
   title: Helm
   hyperlink: https://helm.sh/
+  color: "#0f1c83"
 - id: teamcity
   title: JetBrains TeamCity
   hyperlink: https://www.jetbrains.com/teamcity/
+  color: "#73eb9f"
 - id: ci
   title: CI
   hyperlink: https://en.wikipedia.org/wiki/Continuous_integration
@@ -28,18 +35,23 @@
 - id: typescript
   title: TypeScript
   hyperlink: https://www.typescriptlang.org/
+  color: "#314e7c"
 - id: angular
   title: Angular
   hyperlink: https://angular.io/
+  color: "#cb2b39"
 - id: node
   title: Node.js
   hyperlink: https://nodejs.org/en/
+  color: "#699c55"
 - id: goland
   title: GoLand
   hyperlink: https://www.jetbrains.com/go/
+  color: "#6560e1"
 - id: webstorm
   title: WebStorm
   hyperlink: https://www.jetbrains.com/webstorm/
+  color: "#4a9ad9"
 - id: web-services
   title: Web Services
   hyperlink: https://en.wikipedia.org/wiki/Web_service

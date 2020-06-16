@@ -109,7 +109,7 @@ type webTag struct {
 	Id        string `json:"id"`
 	Title     string `json:"title"`
 	Hyperlink string `json:"hyperlink"`
-	Color     string `json:"color"`
+	Color     string `json:"color,omitempty"`
 }
 
 func (d *dataTag) webTag() *webTag {
