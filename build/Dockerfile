@@ -15,7 +15,7 @@ RUN go build -gcflags "$GCFLAGS" -o /go/bin/app
 FROM gcr.io/distroless/base as run
 ENV GOTRACEBACK=single
 COPY --from=build /go/bin/* /bin/
-CMD [ "/go/app" ]
+CMD [ "/bin/app" ]
 
 WORKDIR /src/app
 COPY ./assets ./assets
