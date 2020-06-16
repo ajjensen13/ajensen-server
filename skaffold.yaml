@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: ajensen-server-skaffold
+    context: .
+    docker:
+      dockerfile: build/Dockerfile
+      noCache: false
+      buildArgs:
+        GCFLAGS: all=-N -l
+        GO_VERSION: 1.14.4
+deploy:
+  helm:
+    releases:
+    - name: ajensen-server
+      chartPath: deploy/ajensen-server
+      artifactOverrides:
+        image.repository: ajensen-server-skaffold
