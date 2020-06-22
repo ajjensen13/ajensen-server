@@ -9,8 +9,9 @@
     The website is built using Angular and is hosted in a Kubernetes cluster in Google
     Cloud (GKE). It talks to a RESTful Web API server written in Go.
 
-    * <small>**Source Code:** [github.com/ajjensen13/ajensen-client](https://github.com/ajjensen13/ajensen-client)</small>
-    * <small>**TeamCity Project:** [ajensen-1993/ajensen-client](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenClient&tab=projectOverview)</small>
+    ## Links ##
+    * **Source Code:** [github.com/ajjensen13/ajensen-server](https://github.com/ajjensen13/ajensen-client)
+    * **TeamCity Project:** [ajensen-1993/ajensen-client](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenClient&tab=projectOverview)
 
   tags:
   - angular
@@ -42,8 +43,10 @@
     The web server is written in Go and uses the [gin-gonic](https://pkg.go.dev/github.com/gin-gonic/gin?tab=doc)
     web framework. It is hosted in a Kubernetes cluster in Google Cloud (GKE).
 
-    * <small>**Code Code & Documentation:** [github.com/ajjensen13/ajensen-server](https://pkg.go.dev/github.com/ajjensen13/ajensen-server?tab=doc)</small>
-    * <small>**TeamCity Project:** [ajensen-1993/ajensen-server](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenServer&tab=projectOverview)</small>
+    ## Links ##
+    * **Source Code:** [github.com/ajjensen13/ajensen-server](https://github.com/ajjensen13/ajensen-server)
+    * **Documentation:** [github.com/ajjensen13/ajensen-server](https://pkg.go.dev/github.com/ajjensen13/ajensen-server?tab=doc)
+    * **TeamCity Project:** [ajensen-1993/ajensen-server](https://teamcity.ajensen.dev/project.html?projectId=Ajensen1993_AjensenServer&tab=projectOverview)
 
   tags:
   - go
@@ -62,6 +65,7 @@
   title: Reverse Proxy
   summary: Created rproxy
   contentMarkdown: |+
+    ## Description ##
     I created a simple reverse proxy application that allows me
     to easily route traffic to different Kubernetes services.
 
@@ -77,8 +81,9 @@
     assets to clients. I want to detect what files to push by monitoring requests that happen within
     a single HTTP keep-alive connection. I'll likely add this tracking to the reverse-proxy layer.
 
-    Source Code:
-        [github.com/ajjensen13/rproxy](https://github.com/ajjensen13/rproxy)
+    ## Links ##
+    * **Source Code:** [github.com/ajjensen13/rproxy](https://github.com/ajjensen13/rproxy)
+
   tags:
   - go
   - kubernetes
