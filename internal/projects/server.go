@@ -104,6 +104,7 @@ func transformFileData(lg gke.Logger, is []interface{}) []*webProject {
 type dataProject struct {
 	Id              string     `yaml:"id"`
 	Title           string     `yaml:"title"`
+	Summary         string     `yaml:"summary"`
 	ContentMarkdown string     `yaml:"contentMarkdown"`
 	StartDate       time.Time  `yaml:"startDate"`
 	EndDate         *time.Time `yaml:"endDate"`
@@ -115,6 +116,7 @@ type dataProject struct {
 type webProject struct {
 	Id          string     `json:"id"`
 	Title       string     `json:"title"`
+	Summary     string     `json:"summary"`
 	ContentHtml string     `json:"contentHtml"`
 	StartDate   time.Time  `json:"startDate"`
 	EndDate     *time.Time `json:"endDate,omitempty"`
@@ -127,6 +129,7 @@ func (d *dataProject) webProject() *webProject {
 	return &webProject{
 		Id:          d.Id,
 		Title:       d.Title,
+		Summary:     d.Summary,
 		ContentHtml: string(blackfriday.Run([]byte(d.ContentMarkdown))),
 		StartDate:   d.StartDate,
 		EndDate:     d.EndDate,

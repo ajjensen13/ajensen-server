@@ -1,5 +1,6 @@
 - id: ajensen-client
   title: Personal Website
+  summary: Created ajensen.dev
   contentMarkdown: |+
     ## Description ##
     I created this website to showcase my professional skills and personal projects.
@@ -26,6 +27,7 @@
   color: "#789174"
 - id: ajensen-server
   parent: ajensen-client
+  summary: Created ajensen-server
   title: Personal Website (Backend)
   contentMarkdown: |+
     ## Description ##
@@ -58,6 +60,7 @@
   color: "#789174"
 - id: rproxy
   title: Reverse Proxy
+  summary: Created rproxy
   contentMarkdown: |+
     I created a simple reverse proxy application that allows me
     to easily route traffic to different Kubernetes services.
