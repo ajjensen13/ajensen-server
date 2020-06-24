@@ -8,7 +8,7 @@ env: []
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-priorityClassName: optional-nonpreempting-pc
+priorityClassName: normal-nonpreempting-pc
 serviceAccount: {}
 podAnnotations: {}
 podSecurityContext: {}
